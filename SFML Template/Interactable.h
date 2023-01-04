@@ -2,13 +2,14 @@
 
 #include <SFML/Graphics.hpp>
 #include <functional>
+#include <map>
 
 class Interactable
 {
 public:
     virtual ~Interactable() = default;
 
-    virtual void setOnClick(std::function<void()> onClick)
+    virtual void setOnClick(sf::Mouse::Button button, std::function<void()> onClick)
     {
         m_onClick = onClick;
     }
@@ -57,6 +58,7 @@ protected:
     { }
 
     sf::FloatRect m_bounds;
+    std::map< sf::Mouse::Button, std::function<void()> > something;
     std::function<void()> m_onClick;
     std::function<void()> m_onEnter;
     std::function<void()> m_onLeave;
