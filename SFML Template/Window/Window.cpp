@@ -1,21 +1,36 @@
 #include "Window.h"
 #include <iostream>
 
-Window::Window() : button(sf::Vector2f(0, 0), sf::Vector2f(200, 100), "Hello Button!", 15, sf::Color::Blue, sf::Color::Green)
+Window::Window() : 
+	button(sf::Vector2f(100, 100), sf::Vector2f(200, 100), 
+		   "Hello Button! (3)", 20, sf::Color::Blue, sf::Color::Green)
 {
-	font.loadFromFile("Fonts/font.ttf");
+	something.push_back(5);
+	something.push_back(53);
+	something.push_back(2);
 
+	font.loadFromFile("Fonts/font.ttf");
 	button.setFont(font);
-	
-	button.setOnClick([]() { 
-		std::cout << "Clicked!" << std::endl; 
-	});
+
+	//Set click event
+	button.setOnClick([]() 
+		{ 
+			std::cout << "Clicked!" << std::endl;
+		});
+	//Set hover event
+	button.setOnEnter([this]()
+		{
+			something.push_back(rand() % 100);
+
+			std::cout << "[";
+			for (int i = 0; i < something.size(); i++)
+				std::cout << something.at(i) << (i == something.size() - 1 ? "]" : ", ");
+			std::cout << std::endl;
+
+			button.setText("Hello Button! (" + std::to_string(something.size()) + ")");
+		});
 
 	initWindow();
-
-	unsigned int x = 1;
-	unsigned int b = 2;
-
 }
 
 Window::~Window()

@@ -6,10 +6,6 @@
 class Interactable
 {
 public:
-    Interactable(const sf::Vector2f& position, const sf::Vector2f& size) :
-        m_bounds(position, size)
-    {}
-
     virtual ~Interactable() = default;
 
     virtual void setOnClick(std::function<void()> onClick)
@@ -17,9 +13,9 @@ public:
         m_onClick = onClick;
     }
 
-    virtual void setOnHover(std::function<void()> onHover)
+    virtual void setOnEnter(std::function<void()> onEnter)
     {
-        m_onHover = onHover;
+        m_onEnter = onEnter;
     }
 
     virtual void setOnLeave(std::function<void()> onLeave)
@@ -38,8 +34,8 @@ public:
         {
             if (m_bounds.contains(event.mouseMove.x, event.mouseMove.y))
             {
-                if (!m_isHovered && m_onHover)
-                    m_onHover();
+                if (!m_isHovered && m_onEnter)
+                    m_onEnter();
 
                 m_isHovered = true;
             }
@@ -56,28 +52,13 @@ public:
     virtual void draw(sf::RenderTarget& target) = 0;
     
 protected:
+    Interactable(const sf::Vector2f& position, const sf::Vector2f& size) :
+        m_bounds(position, size)
+    { }
+
     sf::FloatRect m_bounds;
     std::function<void()> m_onClick;
-    std::function<void()> m_onHover;
+    std::function<void()> m_onEnter;
     std::function<void()> m_onLeave;
     bool m_isHovered = false;
-};
-
-
-class RectangleInteractable : public Interactable
-{
-public:
-    RectangleInteractable(const sf::Vector2f& position, const sf::Vector2f& size)
-        : Interactable(position, size)
-    {
-    }
-
-    void draw(sf::RenderTarget& target) override
-    {
-        sf::RectangleShape shape(sf::Vector2f(Interactable::m_bounds.width,
-                                 Interactable::m_bounds.height));
-        shape.setPosition(m_bounds.left, m_bounds.top);
-        shape.setFillColor(m_isHovered ? sf::Color::Yellow : sf::Color::Red);
-        target.draw(shape);
-    }
 };

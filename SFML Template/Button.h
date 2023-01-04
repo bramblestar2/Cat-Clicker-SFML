@@ -8,9 +8,8 @@ class Button : public Interactable
 {
 public:
     Button(const sf::Vector2f& position, const sf::Vector2f& size,
-        const std::string& text,
-        unsigned int characterSize, const sf::Color& textColor, 
-        const sf::Color& hoverColor)
+           const std::string& text, unsigned int characterSize, 
+           const sf::Color& textColor, const sf::Color& hoverColor)
         : Interactable(position, size)
         , m_textColor(textColor)
         , m_hoverColor(hoverColor)

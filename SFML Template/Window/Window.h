@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <vector>
 #include "../Button.h"
 
 class Window
@@ -25,5 +26,7 @@ private:
 
 	Button button;
 	sf::Font font;
+
+	std::vector<int> something;
 };
 
