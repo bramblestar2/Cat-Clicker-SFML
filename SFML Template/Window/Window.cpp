@@ -13,7 +13,7 @@ Window::Window() :
 	button.setFont(font);
 
 	//Set click event
-	button.setOnClick([]() 
+	button.setOnClick(sf::Mouse::Left, []() 
 		{ 
 			std::cout << "Clicked!" << std::endl;
 		});

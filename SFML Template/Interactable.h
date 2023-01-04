@@ -11,7 +11,7 @@ public:
 
     virtual void setOnClick(sf::Mouse::Button button, std::function<void()> onClick)
     {
-        m_onClick = onClick;
+        m_onClick[button] = onClick;
     }
 
     virtual void setOnEnter(std::function<void()> onEnter)
@@ -28,8 +28,9 @@ public:
     {
         if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
         {
-            if (m_bounds.contains(event.mouseButton.x, event.mouseButton.y) && m_onClick)
-                m_onClick();
+            auto it = m_onClick.find(event.mouseButton.button);
+            if (it != m_onClick.end() && m_bounds.contains(event.mouseButton.x, event.mouseButton.y))
+                it->second();
         }
         else if (event.type == sf::Event::MouseMoved)
         {
@@ -58,8 +59,8 @@ protected:
     { }
 
     sf::FloatRect m_bounds;
-    std::map< sf::Mouse::Button, std::function<void()> > something;
-    std::function<void()> m_onClick;
+    std::map< sf::Mouse::Button, std::function<void()> > m_onClick;
+    //std::function<void()> m_onClick;
     std::function<void()> m_onEnter;
     std::function<void()> m_onLeave;
     bool m_isHovered = false;
