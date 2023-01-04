@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "../Button.h"
 
 class Window
 {
@@ -21,5 +22,8 @@ private:
 
 	sf::RenderWindow* window;
 	sf::Event event;
+
+	Button button;
+	sf::Font font;
 };
 
