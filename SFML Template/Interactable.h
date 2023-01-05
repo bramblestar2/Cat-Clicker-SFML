@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <functional>
 #include <map>
+#include <iostream>
 
 class Interactable
 {
@@ -26,7 +27,7 @@ public:
 
     virtual void handleEvent(const sf::Event& event)
     {
-        if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
+        if (event.type == sf::Event::MouseButtonPressed)
         {
             auto it = m_onClick.find(event.mouseButton.button);
             if (it != m_onClick.end() && m_bounds.contains(event.mouseButton.x, event.mouseButton.y))

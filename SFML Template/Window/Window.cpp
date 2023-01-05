@@ -12,14 +12,32 @@ Window::Window() :
 	font.loadFromFile("Fonts/font.ttf");
 	button.setFont(font);
 
+	int clicks = 0;
+
 	//Set click event
-	button.setOnClick(sf::Mouse::Left, []() 
-		{ 
-			std::cout << "Clicked!" << std::endl;
-		});
-	//Set hover event
-	button.setOnEnter([this]()
+	button.setOnClick(sf::Mouse::Left, [&clicks, this]()
 		{
+			clicks++;
+			button.setText("Hello Button! (" + std::to_string(clicks) + ")");
+		});
+
+	button.setOnClick(sf::Mouse::Right, [&clicks, this]()
+		{
+			clicks--;
+			button.setText("Hello Button! (" + std::to_string(clicks) + ")");
+		});
+
+	button.setOnClick(sf::Mouse::Middle, [&clicks, this]()
+		{
+			clicks *= clicks;
+			button.setText("Hello Button! (" + std::to_string(clicks) + ")");
+		});
+
+	//Set hover event
+	button.setOnEnter([&clicks, this]()
+		{
+			std::cout << "Mouse hovering over Button!" << std::endl;
+			/*
 			something.push_back(rand() % 100);
 
 			std::cout << "[";
@@ -28,6 +46,7 @@ Window::Window() :
 			std::cout << std::endl;
 
 			button.setText("Hello Button! (" + std::to_string(something.size()) + ")");
+			*/
 		});
 
 	initWindow();
