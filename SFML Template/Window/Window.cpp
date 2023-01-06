@@ -1,53 +1,35 @@
 #include "Window.h"
 #include <iostream>
 
-Window::Window() : 
-	button(sf::Vector2f(100, 100), sf::Vector2f(200, 100), 
-		   "Hello Button! (3)", 20, sf::Color::Blue, sf::Color::Green)
+Window::Window()
 {
-	something.push_back(5);
-	something.push_back(53);
-	something.push_back(2);
-
 	font.loadFromFile("Fonts/font.ttf");
-	button.setFont(font);
+
+	handler.addInteractable(&check, "check");
+	handler.addInteractable(&field, "textfield");
 
 	int clicks = 0;
 
-	//Set click event
-	button.setOnClick(sf::Mouse::Left, [&clicks, this]()
+	auto add = [](int a, int b) -> int { return a + b; };
+
+	//std::cout << add(1, 6) << std::endl;
+
+
+	field.setSize({ 200, 50 });
+	field.setTextFont(font);
+	field.setTextColor(sf::Color::White);
+	field.setCursorColor(sf::Color::White);
+	field.setTextSize(20);
+	field.setText("Hi");
+	field.setBackgroundColor(sf::Color::Transparent);
+
+	check.setPosition({ 100,100 });
+	check.setOnClick(sf::Mouse::Left, [&]()
 		{
-			clicks++;
-			button.setText("Hello Button! (" + std::to_string(clicks) + ")");
+			check.setChecked(check.isChecked() ? false : true);
 		});
 
-	button.setOnClick(sf::Mouse::Right, [&clicks, this]()
-		{
-			clicks--;
-			button.setText("Hello Button! (" + std::to_string(clicks) + ")");
-		});
 
-	button.setOnClick(sf::Mouse::Middle, [&clicks, this]()
-		{
-			clicks *= clicks;
-			button.setText("Hello Button! (" + std::to_string(clicks) + ")");
-		});
-
-	//Set hover event
-	button.setOnEnter([&clicks, this]()
-		{
-			std::cout << "Mouse hovering over Button!" << std::endl;
-			/*
-			something.push_back(rand() % 100);
-
-			std::cout << "[";
-			for (int i = 0; i < something.size(); i++)
-				std::cout << something.at(i) << (i == something.size() - 1 ? "]" : ", ");
-			std::cout << std::endl;
-
-			button.setText("Hello Button! (" + std::to_string(something.size()) + ")");
-			*/
-		});
 
 	initWindow();
 }
@@ -72,13 +54,21 @@ void Window::render()
 {
 	window->clear();
 
-	button.draw(*window);
+	handler.draw(*window);
 
 	window->display();
 }
 
 void Window::update()
 {
+	if (((Checkbox*)handler.getInteractable(0).second)->isChecked())
+	{
+		TextField* field = ((TextField*)handler.getInteractable(1).second);
+		if (field->isFocused())
+		{
+			field->setFocused(false);
+		}
+	}
 }
 
 void Window::updateDt()
@@ -90,7 +80,7 @@ void Window::updateSFMLEvents()
 {
 	while (window->pollEvent(event))
 	{
-		button.handleEvent(event);
+		handler.handleEvent(event);
 
 		switch (event.type)
 		{

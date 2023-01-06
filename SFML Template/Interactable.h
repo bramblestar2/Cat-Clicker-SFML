@@ -61,7 +61,6 @@ protected:
 
     sf::FloatRect m_bounds;
     std::map< sf::Mouse::Button, std::function<void()> > m_onClick;
-    //std::function<void()> m_onClick;
     std::function<void()> m_onEnter;
     std::function<void()> m_onLeave;
     bool m_isHovered = false;

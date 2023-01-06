@@ -2,6 +2,9 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "../Button.h"
+#include "../InteractableHandler.h"
+#include "../Checkbox.h"
+#include "../TextField.h"
 
 class Window
 {
@@ -24,7 +27,10 @@ private:
 	sf::RenderWindow* window;
 	sf::Event event;
 
-	Button button;
+	InteractableHandler handler;
+
+	TextField field;
+	Checkbox check;
 	sf::Font font;
 
 	std::vector<int> something;

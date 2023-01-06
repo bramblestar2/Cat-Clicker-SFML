@@ -7,9 +7,13 @@
 class Button : public Interactable
 {
 public:
+    Button()
+        : Button({ 0, 0 }, { 0, 0 }, "", 0, sf::Color::Black, sf::Color::White)
+    { }
+
     Button(const sf::Vector2f& position, const sf::Vector2f& size,
-           const std::string& text, unsigned int characterSize, 
-           const sf::Color& textColor, const sf::Color& hoverColor)
+        const std::string& text, unsigned int characterSize,
+        const sf::Color& textColor, const sf::Color& hoverColor)
         : Interactable(position, size)
         , m_textColor(textColor)
         , m_hoverColor(hoverColor)
@@ -33,6 +37,37 @@ public:
         m_label.setFont(font);
         sf::FloatRect bounds = m_label.getLocalBounds();
         m_label.setOrigin(bounds.width / 2, bounds.height / 2);
+    }
+
+    void setCharacterSize(unsigned int size)
+    {
+        m_label.setCharacterSize(size);
+        sf::FloatRect bounds = m_label.getLocalBounds();
+        m_label.setOrigin(bounds.width / 2, bounds.height / 2);
+    }
+
+    void setTextColor(const sf::Color& color)
+    {
+        m_label.setFillColor(color);
+    }
+
+    void setHoverColor(const sf::Color& color)
+    {
+        m_hoverColor = color;
+    }
+
+    void setPosition(const sf::Vector2f& position)
+    {
+        m_bounds.left = position.x;
+        m_bounds.top = position.y;
+        m_label.setPosition(position.x + m_bounds.width / 2, position.y + m_bounds.height / 2);
+    }
+
+    void setSize(const sf::Vector2f& size)
+    {
+        m_bounds.width = size.x;
+        m_bounds.height = size.y;
+        m_label.setPosition(m_bounds.left + size.x / 2, m_bounds.top + size.y / 2);
     }
 
     void draw(sf::RenderTarget& target) override
